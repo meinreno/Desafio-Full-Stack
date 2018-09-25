@@ -43,17 +43,17 @@ class Show(models.Model):
     @property
     def get_total_revenue(self):
         total_revenue = self.get_ticket_price * self.get_sold_tickets
-        return total_revenue
+        return total_revenue.quantize(D('0.00'))
     
     @property
     def get_net_revenue(self):
         net_revenue = self.price * self.get_sold_tickets
-        return net_revenue
+        return net_revenue.quantize(D('0.00'))
 
     @property
     def get_tax_total(self):
-        tax_total = self.price * self.get_tax_value
-        return tax_total
+        tax_total = self.get_sold_tickets * self.get_tax_value
+        return tax_total.quantize(D('0.00'))
 
 class Ticket(models.Model):
     show = models.ForeignKey(Show, related_name="ticket_show", on_delete=models.CASCADE)
